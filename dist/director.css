@@ -1,0 +1,583 @@
+.director-options,
+.design-note {
+  margin: 1.1rem 0;
+  color: inherit;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+.director-options summary,
+.design-note summary {
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: var(--hair);
+  text-underline-offset: 4px;
+  width: fit-content;
+}
+.director-options p,
+.design-note p {
+  margin: 0.55rem 0;
+  max-width: 50ch;
+}
+.director-options input {
+  accent-color: #776545;
+}
+.director-options label {
+  display: block;
+  margin-top: 0.6rem;
+}
+.director-origin {
+  display: block;
+  font-size: 0.9rem;
+  line-height: 1.35;
+  opacity: 0.83;
+}
+.story[data-layout] .story-print {
+  background-color: color-mix(in srgb, var(--tint-paper) 54%, #fff7e7);
+  border-bottom: 3px solid var(--frame-ink);
+}
+.story[data-layout] h2 {
+  overflow-wrap: anywhere;
+  font-size: clamp(2.25rem, 4.2vw, 4.5rem);
+  color: color-mix(in srgb, var(--pen-color) 34%, var(--ink));
+}
+.story[data-layout] .story-text {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.story[data-layout] .story-date {
+  margin-bottom: 0.8rem;
+}
+.story[data-layout="letter"] .story-print {
+  transform: rotate(-2deg);
+}
+.story[data-layout="letter"] .story-print:before {
+  left: 12%;
+  transform: rotate(-11deg);
+}
+.story[data-layout="postcard"] .story-print {
+  transform: rotate(3deg);
+}
+.story[data-layout="postcard"] .story-photo:after {
+  content: "";
+  position: absolute;
+  width: 23%;
+  height: 38%;
+  right: -6%;
+  bottom: -8%;
+  background: url("assets/herb-gold.webp") center/contain no-repeat;
+  pointer-events: none;
+}
+.story[data-layout="contact"] .story-print {
+  transform: rotate(-5deg);
+  box-shadow:
+    7px 8px 0 var(--frame-ink),
+    10px 12px 15px #43312435;
+}
+.story[data-layout="contact"] .story-print:before {
+  left: auto;
+  right: 9%;
+  transform: rotate(16deg);
+}
+.story[data-lettering="lyrical"] h2 {
+  font-style: italic;
+  font-weight: 500;
+}
+.story[data-lettering="reflective"] h2 {
+  font-style: normal;
+  font-weight: 400;
+}
+.story[data-lettering="brisk"] h2 {
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: -0.023em;
+}
+.story[data-layout].develop .print-image > img,
+.story[data-layout].develop .print-image:after {
+  animation-duration: var(--develop-time);
+}
+@media (min-width: 760px) {
+  .story[data-layout] .story-photo {
+    order: 0;
+  }
+  .story[data-layout="postcard"] .story-photo {
+    order: 2;
+  }
+  .story[data-layout="contact"] .print-image {
+    aspect-ratio: 1.36;
+  }
+}
+.ink-swatches,
+.edit-swatches,
+.director-actions {
+  display: flex;
+  gap: 0.55rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.ink-swatches i {
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 50%;
+  border: 1px solid #342f2f35;
+}
+#director-dialog {
+  width: min(94vw, 640px);
+  max-height: 88svh;
+  overflow: auto;
+  padding: clamp(20px, 4vw, 40px);
+  background: var(--paper, #efe6d7);
+  color: var(--ink);
+  border: 1px solid var(--hair);
+  border-radius: 4px;
+  box-shadow: 0 16px 65px #22190f55;
+}
+#director-dialog::backdrop {
+  background: #26201780;
+}
+:root[data-theme="night"] {
+  --paper: #d7d5df;
+  --card: #f4f1f5;
+  --ink: #302d38;
+  --soft: #625d6d;
+  --line: #9d98aa;
+  --hair: #4a455522;
+  --mat: #c2bfcc;
+  --accent: #80739a;
+}
+:root[data-theme="night"] body:is([data-view="writer"], [data-view="reader"]) {
+  background:
+    linear-gradient(#f3eee6a8, #e4dbd0a8),
+    var(--scene) center top/100% 100svh fixed,
+    var(--paper);
+  background-blend-mode: normal;
+}
+:root[data-theme="night"] body[data-view="reader"] .reader-heading {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+:root[data-theme="night"] body[data-view="reader"] .reader-heading::before {
+  display: none;
+}
+.story-photo .mini-disc {
+  position: absolute;
+  z-index: 3;
+  right: -20px;
+  bottom: 7%;
+  width: 48px;
+  height: 48px;
+  border: 3px solid #eee8dc;
+  border-radius: 50%;
+  background: radial-gradient(circle, #d6b68b 0 10%, #322d29 11% 20%, #50443c 21% 29%, #252321 30% 44%, #49433d 45% 48%, #242321 49%);
+  box-shadow: 0 4px 10px #201b1a55;
+  cursor: pointer;
+}
+.story-photo .mini-disc::after {
+  content: "";
+  position: absolute;
+  inset: 21px;
+  border-radius: 50%;
+  background: #eee8dc;
+}
+.story-photo .mini-disc.is-playing {
+  animation: disc-spin 2s linear infinite;
+}
+@keyframes disc-spin { to { transform: rotate(360deg); } }
+#play-dock { display: none !important; }
+@media (prefers-reduced-motion: reduce) {
+  .story-photo .mini-disc.is-playing { animation: none; }
+}
+#director-dialog .dialog-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+#director-dialog h2 {
+  margin: 0;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+}
+#director-body > .text-link {
+  margin: 0.75rem 1rem 0.2rem 0;
+}
+#director-body > .story {
+  min-height: 0;
+  padding: 2rem 0.55rem;
+  gap: 1.5rem;
+}
+#director-body > .story h2 {
+  font-size: 2rem;
+}
+.director-form {
+  display: grid;
+  gap: 1rem;
+}
+.director-form > label {
+  display: grid;
+  gap: 0.25rem;
+}
+.director-form input:not([type="color"]),
+.director-form textarea,
+.director-form select {
+  padding: 0.45rem 0.6rem;
+  background: var(--paper);
+  color: inherit;
+  border: 1px solid var(--hair);
+  font: inherit;
+  width: 100%;
+}
+.director-form textarea {
+  min-height: 5rem;
+}
+.edit-swatches {
+  border: 0;
+  padding: 0;
+}
+.edit-swatches input {
+  width: 3rem;
+  height: 2.2rem;
+}
+#director-report {
+  display: block;
+  font: inherit;
+  font-size: clamp(0.86rem, 1.4vw, 1.1rem);
+  margin-top: 1.1rem;
+  text-align: left;
+}
+#director-report:disabled {
+  opacity: 0.48;
+  cursor: default;
+}
+.month-score-dot {
+  display: inline-block;
+  width: 0.2em;
+  height: 0.2em;
+  min-width: 11px;
+  min-height: 11px;
+  vertical-align: middle;
+  border-radius: 50%;
+  outline: 1px solid #51483933;
+  margin-left: 0.13em;
+}
+.report-star {
+  position: absolute;
+  z-index: 2;
+  right: 9%;
+  top: 1%;
+  color: #805514;
+  font-size: clamp(0.85rem, 1.6vw, 1.6rem);
+  line-height: 1.05;
+  text-shadow: 0 1px 1px #fff5db;
+}
+.report-average {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 2.2rem;
+  margin-bottom: 0.35rem;
+}
+.report-average .month-score-dot {
+  width: 0.5em;
+  height: 0.5em;
+}
+.rank-days {
+  padding-left: 1.5rem;
+}
+.rank-days li {
+  padding: 0.65rem 0.2rem;
+  border-bottom: 1px solid var(--hair);
+}
+.rank-days b {
+  float: right;
+}
+.rank-days p {
+  margin: 0.3rem 0;
+}
+@media (max-width: 759px) {
+  .story[data-layout] .story-photo {
+    order: 0;
+  }
+  #director-report {
+    margin-top: 0.5rem;
+  }
+  .report-star {
+    right: 8%;
+  }
+  .month-score-dot {
+    vertical-align: 0.28em;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .story[data-layout].develop .print-image > img,
+  .story[data-layout].develop .print-image:after {
+    animation: none;
+  }
+}
+
+/* ---- Writer and reader pages: one fixed scene that always fills the screen ---- */
+html:has(body[data-view="writer"]),
+html:has(body[data-view="reader"]) {
+  background: #b3a595;
+}
+body:is([data-view="writer"], [data-view="reader"]) {
+  background: transparent;
+}
+body:is([data-view="writer"], [data-view="reader"])::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(180deg, #d1a1682e 0%, #f1e3c914 40%, #7a50282b 100%),
+    url("assets/daytrace-writer.webp") center/cover no-repeat;
+  pointer-events: none;
+}
+:root[data-theme="night"] body:is([data-view="writer"], [data-view="reader"])::before {
+  background:
+    linear-gradient(#302c27e0, #2a2823ea),
+    url("assets/daytrace-writer.webp") center/cover no-repeat;
+}
+
+/* ---- Name field: no square focus frame ---- */
+.ink-line input:focus,
+.ink-line input:focus-visible,
+.ink-line .icon:focus,
+.ink-line .icon:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+.ink-line:focus-within {
+  border-color: #8a6a4a;
+}
+
+/* ---- Reader top bar: no highlighted block ---- */
+.reader-heading,
+.reader-heading::before {
+  background: transparent !important;
+  box-shadow: none;
+  border: 0;
+}
+.reader-heading::before {
+  display: none;
+}
+
+/* ---- Emotion motifs around the photo ---- */
+.emotion-deco {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 4;
+}
+.emotion-deco span {
+  position: absolute;
+  width: calc(clamp(22px, 2.3vw, 36px) * var(--k, 1));
+  aspect-ratio: 1;
+  color: var(--frame-ink, #8a6a4a);
+  opacity: 0;
+  animation: deco-in 0.9s calc(var(--develop-time, 1.5s) * 0.6) forwards;
+}
+.emotion-deco svg {
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.emotion-deco .deco-emoji {
+  width: auto;
+  aspect-ratio: auto;
+  font: 400 calc(clamp(20px, 2.1vw, 32px) * var(--k, 1))/1 "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
+}
+@keyframes emoji-in {
+  from { opacity: 0; transform: scale(0.6); }
+  to { opacity: 1; transform: scale(1); }
+}
+.emotion-deco .deco-emoji { animation-name: emoji-in; }
+.emotion-deco .deco-1 { left: -5%; top: -4%; rotate: -12deg; }
+.emotion-deco .deco-2 { right: -4%; top: -6%; rotate: 14deg; }
+.emotion-deco .deco-3 { left: -8%; top: 44%; rotate: -6deg; }
+.emotion-deco .deco-4 { right: -7%; top: 52%; rotate: 9deg; }
+.emotion-deco .deco-5 { left: 8%; bottom: -7%; rotate: 10deg; }
+.emotion-deco .deco-6 { right: 12%; bottom: -8%; rotate: -14deg; }
+@keyframes deco-in {
+  from { opacity: 0; transform: scale(0.6); }
+  to { opacity: 0.72; transform: scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .emotion-deco span { animation: none; opacity: 0.72; }
+}
+
+/* ---- Month report: description and best-month card; embedded music ---- */
+.month-description {
+  font-style: italic;
+  color: #5b5143;
+}
+.best-month {
+  margin: 14px 0;
+  padding: 14px 18px;
+  border: 1.5px solid #c49a3a;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #fff3cf, #f7dfb2);
+  color: #4a3a1c;
+  font-weight: 500;
+  line-height: 1.5;
+  box-shadow: 0 4px 16px #c49a3a33;
+}
+.music-embed {
+  margin: 14px 0 0;
+}
+.music-embed .embed-frame {
+  display: block;
+  width: min(420px, 100%);
+  margin-top: 10px;
+  border: 0;
+  border-radius: 12px;
+  background: #0001;
+}
+
+/* ---- Background music toggle ---- */
+.ambient-toggle {
+  position: fixed;
+  left: 16px;
+  bottom: 16px;
+  z-index: 30;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid #8a6a4a66;
+  background: #f4ecdccc;
+  color: #5a4630;
+  font: 400 24px/1 "Segoe UI Symbol", sans-serif;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+}
+.ambient-toggle.is-off {
+  opacity: 0.6;
+}
+.ambient-toggle:hover {
+  opacity: 1;
+}
+.ambient-toggle.is-off::after {
+  content: "";
+  position: absolute;
+  left: 9px;
+  right: 9px;
+  top: 50%;
+  border-top: 2px solid #5a4630;
+  rotate: -45deg;
+}
+#month-desc {
+  max-width: 280px;
+  margin: 14px 0 6px;
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+/* ---- Spinning disc while a day's own track plays ---- */
+.spin-disc {
+  position: fixed;
+  right: 22px;
+  top: 50%;
+  z-index: 20;
+  width: clamp(72px, 8vw, 118px);
+  aspect-ratio: 1;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(60px, -50%) scale(0.8);
+  transition: opacity 0.5s, transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+  filter: drop-shadow(0 6px 14px #2d2a2740);
+}
+.spin-disc.is-on {
+  opacity: 1;
+  transform: translate(0, -50%) scale(1);
+}
+.spin-disc svg {
+  width: 100%;
+  height: 100%;
+}
+.spin-disc .disc-body {
+  transform-origin: 50% 50%;
+  animation: disc-spin 3.2s linear infinite;
+}
+@keyframes disc-spin {
+  to { transform: rotate(360deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .spin-disc .disc-body { animation-duration: 12s; }
+}
+
+/* ================= December: festive paper scene ================= */
+html:has(body[data-month="12"]:is([data-view="month"], [data-view="writer"], [data-view="reader"])) {
+  background: #e9dccb;
+}
+body[data-month="12"]:is([data-view="month"], [data-view="writer"], [data-view="reader"]) {
+  background: transparent !important;
+  --accent: #8c2f39;
+  --frame-ink: #8c2f39;
+}
+body[data-month="12"]:is([data-view="month"], [data-view="writer"], [data-view="reader"])::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: url("assets/december-bg.webp") center/cover no-repeat;
+}
+:root[data-theme="night"] body[data-month="12"]:is([data-view="month"], [data-view="writer"], [data-view="reader"])::before {
+  background:
+    linear-gradient(#2b1d1fd9, #231a1cdd),
+    url("assets/december-bg.webp") center/cover no-repeat;
+}
+/* gentle snowfall */
+body[data-month="12"]:is([data-view="month"], [data-view="writer"], [data-view="reader"])::after {
+  content: "";
+  position: fixed;
+  inset: -100px 0 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.55;
+  background-image:
+    radial-gradient(3px 3px at 12% 20%, #fff 60%, transparent 62%),
+    radial-gradient(2px 2px at 27% 65%, #fff 60%, transparent 62%),
+    radial-gradient(4px 4px at 44% 35%, #fff 60%, transparent 62%),
+    radial-gradient(2px 2px at 58% 80%, #fff 60%, transparent 62%),
+    radial-gradient(3px 3px at 73% 15%, #fff 60%, transparent 62%),
+    radial-gradient(2px 2px at 88% 55%, #fff 60%, transparent 62%),
+    radial-gradient(3px 3px at 95% 90%, #fff 60%, transparent 62%);
+  background-size: 420px 420px;
+  animation: snowfall 18s linear infinite;
+}
+@keyframes snowfall {
+  to { background-position: 40px 420px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  body[data-month="12"]::after { animation: none; }
+}
+body[data-month="12"] #month-name,
+body[data-month="12"] .write-copy h1,
+body[data-month="12"] .story-copy h2 {
+  color: #2a1d1a;
+}
+body[data-month="12"] #month-desc {
+  font: 400 clamp(22px, 2.2vw, 30px)/1.4 var(--script, "Bad Script", cursive);
+  color: #5d4a42;
+  max-width: 300px;
+}
+body[data-month="12"] .ink-button {
+  background: #8c2f39;
+  color: #fff6ea;
+}
+body[data-month="12"] .quiet-pill,
+body[data-month="12"] .round {
+  border-color: #8c2f3966;
+}
+body[data-month="12"] .emotion-deco span {
+  color: #8c2f39;
+}
+body[data-month="12"] .write-layout input,
+body[data-month="12"] .write-layout textarea {
+  background: #fffaf0b8;
+  border-radius: 10px;
+}

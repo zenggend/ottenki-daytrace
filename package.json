@@ -1,0 +1,10 @@
+{
+  "name": "daytrace-diary",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node serve.mjs",
+    "test": "node --test tests/director.test.mjs",
+    "build": "node scripts/check-static.mjs"
+  }
+}

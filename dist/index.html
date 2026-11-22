@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#e9e3d9" />
+    <meta
+      name="description"
+      content="Личный фотоальбом с заметками и музыкой по дням."
+    />
+    <title>DAYTRACE — фотоальбом дней</title>
+    <link rel="icon" href="assets/daytrace-mark.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="styles.css?v=20261122e" />
+    <link rel="stylesheet" href="month.css?v=20261122e" />
+    <link rel="stylesheet" href="year.css?v=20261122e" />
+    <link rel="stylesheet" href="director.css?v=20261122e" />
+    <script src="theme.js?v=20261122e"></script>
+    <script defer src="app.js?v=20261122e"></script>
+    <script defer src="player.js?v=20261122e"></script>
+    <script defer src="ambient.js?v=20261122e"></script>
+    <script defer src="emoji-pool.js?v=20261122e"></script>
+    <script defer src="director-contract.js?v=20261122e"></script>
+    <script defer src="director-data.js?v=20261122e"></script>
+    <script defer src="director-ui.js?v=20261122e"></script>
+    <script defer src="albums.js?v=20261122e"></script>
+    <script defer src="composer.js?v=20261122e"></script>
+    <script defer src="home.js?v=20261122e"></script>
+  </head>
+  <body>
+    <svg class="symbols" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <symbol id="left" viewBox="0 0 24 24">
+          <path d="m14.5 5-7 7 7 7" />
+        </symbol>
+        <symbol id="right" viewBox="0 0 24 24">
+          <path d="m9.5 5 7 7-7 7" />
+        </symbol>
+        <symbol id="arrow" viewBox="0 0 24 24">
+          <path d="M3 12h17m-7-7 7 7-7 7" />
+        </symbol>
+        <symbol id="plus" viewBox="0 0 24 24">
+          <path d="M12 4v16M4 12h16" />
+        </symbol>
+        <symbol id="close" viewBox="0 0 24 24">
+          <path d="m5 5 14 14M19 5 5 19" />
+        </symbol>
+        <symbol id="person" viewBox="0 0 24 24">
+          <circle cx="12" cy="8" r="3.7" />
+          <path d="M4 20c.4-4.2 3.1-6.5 8-6.5s7.6 2.3 8 6.5" />
+        </symbol>
+        <symbol id="settings" viewBox="0 0 24 24">
+          <path
+            d="m9 3 1-1h4l1 2 2 .9 2.1-.4 1.9 3.2-1.3 1.8v3l1.3 2-2 3.2-2-.3-2 1.1-1 2.5h-4l-1-2.5-2-1.1-2 .3-2-3.2 1.3-2v-3L3 7.7l1.9-3.2 2.1.4L9 4Z"
+          />
+          <circle cx="12" cy="11.4" r="3.3" />
+        </symbol>
+        <symbol id="camera" viewBox="0 0 24 24">
+          <path d="M3 7h4l1.8-3h6.4L17 7h4v13H3Z" />
+          <circle cx="12" cy="13" r="4" />
+        </symbol>
+        <symbol id="music" viewBox="0 0 24 24">
+          <path d="M9 17V5l11-2v12M9 8l11-2" />
+          <ellipse cx="6" cy="18" rx="3" ry="2.5" />
+          <ellipse cx="17" cy="16" rx="3" ry="2.5" />
+        </symbol>
+        <symbol id="cal" viewBox="0 0 24 24">
+          <rect x="3" y="5" width="18" height="16" rx="2" />
+          <path d="M7.5 3v4m9-4v4M3 10h18M7 14h2m3 0h2" />
+        </symbol>
+        <symbol id="star" viewBox="0 0 44 44">
+          <path d="m4 17 33 8L14 3l9 37 11-32L5 32l35-14" />
+        </symbol>
+        <symbol id="heart" viewBox="0 0 30 32">
+          <path
+            d="M15 29C9 21-1 6 5 4c5-2 9 8 10 11C20 2 28 1 27 8c0 5-8 16-12 21Z"
+          />
+        </symbol>
+      </defs>
+    </svg>
+    <header class="mast">
+      <a href="#year" class="brand" aria-label="DAYTRACE, к альбомам"
+        >DAYTRACE</a
+      >
+      <p class="signature" lang="en">Every day leaves a trace.</p>
+      <nav id="main-nav" hidden aria-label="Дневник">
+        <a href="#year" id="albums-nav">Альбомы</a
+        ><a href="#write" id="write-nav">Запись дня</a>
+      </nav>
+      <div id="account-tools" class="account-tools" hidden>
+        <button class="icon round" id="profile-open" aria-label="Профиль">
+          <svg><use href="#person" /></svg></button
+        ><button class="icon round" id="settings-open" aria-label="Настройки">
+          <svg><use href="#settings" /></svg>
+        </button>
+      </div>
+    </header>
+    <main id="pages">
+      <section id="welcome" hidden aria-labelledby="name-prompt">
+        <div class="welcome-print" aria-hidden="true"></div>
+        <form id="name-form" class="name-paper">
+          <h1 id="name-prompt" lang="en">What is your name?</h1>
+          <label class="sr" for="first-name">Твоё имя</label>
+          <div class="ink-line">
+            <input
+              id="first-name"
+              required
+              maxlength="48"
+              autocomplete="given-name"
+              placeholder="Твоё имя"
+            /><button class="icon" aria-label="Открыть дневник">
+              <svg><use href="#arrow" /></svg>
+            </button>
+          </div>
+          <p id="name-error" class="msg" role="status"></p>
+        </form>
+      </section>
+      <section
+        id="writer"
+        class="season-page"
+        hidden
+        aria-labelledby="write-title"
+      >
+        <form id="day-form" novalidate>
+          <div class="write-layout">
+            <div class="write-visual">
+              <svg class="doodle draw-star" aria-hidden="true">
+                <use href="#star" />
+              </svg>
+              <div class="instant editor-print">
+                <label class="print-image upload-target" for="photos"
+                  ><img
+                    id="hero-photo"
+                    alt="Первый снимок записи"
+                    hidden /><span class="upload-copy" id="upload-copy"
+                    ><svg><use href="#camera" /></svg
+                    ><strong>Добавить фото</strong
+                    ><small>До четырёх снимков</small></span
+                  ><input
+                    type="file"
+                    class="sr"
+                    id="photos"
+                    accept="image/jpeg,image/png,image/webp"
+                    multiple
+                /></label>
+                <div class="print-caption">
+                  <span id="caption-date"></span
+                  ><svg aria-hidden="true"><use href="#heart" /></svg>
+                </div>
+              </div>
+              <div class="photo-strip" id="thumbs"></div>
+            </div>
+            <div class="write-copy">
+              <div class="crumb">
+                <a id="editor-month" href="#month">Альбом месяца</a>
+              </div>
+              <div class="date-control">
+                <button
+                  type="button"
+                  id="prev-date"
+                  class="icon"
+                  aria-label="Предыдущий день"
+                >
+                  <svg><use href="#left" /></svg></button
+                ><label class="date-label"
+                  ><span id="date-title"></span><svg><use href="#cal" /></svg
+                  ><input
+                    type="date"
+                    id="entry-date"
+                    aria-label="Дата записи"
+                    required /></label
+                ><button
+                  type="button"
+                  id="next-date"
+                  class="icon"
+                  aria-label="Следующий день"
+                >
+                  <svg><use href="#right" /></svg></button
+                ><button type="button" id="to-today" class="text-link" hidden>
+                  Сегодня
+                </button>
+              </div>
+              <h1 id="write-title">Запись дня</h1>
+              <label class="sr" for="thoughts">Заметка дня</label
+              ><textarea
+                id="thoughts"
+                required
+                maxlength="5000"
+                rows="4"
+                placeholder="Что хочется запомнить?"
+              ></textarea>
+              <div class="options-row">
+                <label class="tone-label"
+                  ><i id="tone-dot"></i
+                  ><select id="entry-tone" aria-label="Оттенок дня">
+                    <option value="">Оттенок по записи</option>
+                  </select></label
+                ><button
+                  type="button"
+                  id="music-toggle"
+                  class="quiet-pill"
+                  aria-expanded="false"
+                  aria-controls="music-fields"
+                >
+                  <svg><use href="#music" /></svg><span>Добавить музыку</span>
+                </button>
+              </div>
+              <div id="music-fields" class="music-fields" hidden>
+                <label
+                  >Трек<input
+                    id="song-name"
+                    maxlength="120"
+                    placeholder="Исполнитель и название" /></label
+                ><label
+                  >Ссылка на трек<input
+                    id="song-url"
+                    type="text"
+                    inputmode="url"
+                    placeholder="https://…"
+                /></label>
+                <div class="music-tools">
+                  <label class="quiet-pill file-pill"
+                    ><svg><use href="#music" /></svg
+                    ><span id="audio-name">Прикрепить аудиофайл</span
+                    ><input
+                      type="file"
+                      class="sr"
+                      id="song-file"
+                      accept="audio/*" /></label
+                  ><label class="tone-label"
+                    ><select id="energy" aria-label="Характер музыки">
+                      <option value="">Характер музыки</option>
+                    </select></label
+                  ><button type="button" id="clear-music" class="text-link">
+                    Убрать
+                  </button>
+                </div>
+              </div>
+              <details class="director-options">
+                <summary>Оформить день</summary>
+                <label
+                  ><input id="director-enabled" type="checkbox" /> Умное оформление</label
+                >
+                <p>
+                  Настроение подбирается по словам записи и характеру музыки, без загрузки модели. У каждой эмоции своя палитра, описание и значки вокруг снимка.
+                </p>
+              </details>
+              <div class="save-line">
+                <button type="submit" class="ink-button" id="save-day">
+                  Сохранить день <svg><use href="#arrow" /></svg></button
+                ><span id="editor-status" class="msg" role="status"></span
+                ><button
+                  type="button"
+                  id="cancel-analysis"
+                  class="text-link"
+                  hidden
+                >
+                  Сохранить по правилам
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </section>
+      <section
+        id="year-view"
+        class="archive-page"
+        aria-labelledby="albums-title"
+        hidden
+      >
+        <div class="archive-heading">
+          <div>
+            <h1 id="albums-title">
+              Альбомы
+              <span class="year-pencil" aria-hidden="true"
+                ><svg><use href="#heart" /></svg
+              ></span>
+            </h1>
+            <div class="year-pager">
+              <button
+                class="icon round"
+                id="year-prev"
+                aria-label="Предыдущий год"
+              >
+                <svg><use href="#left" /></svg></button
+              ><input
+                id="year-number"
+                type="number"
+                min="1"
+                max="9999"
+                aria-label="Год альбомов"
+              /><button
+                class="icon round"
+                id="year-next"
+                aria-label="Следующий год"
+              >
+                <svg><use href="#right" /></svg>
+              </button>
+            </div>
+          </div>
+          <a href="#write" class="quiet-pill year-new"
+            ><span class="year-marks" aria-hidden="true"></span
+            ><svg><use href="#plus" /></svg>Запись дня</a
+          >
+        </div>
+        <div id="months" class="months"></div>
+      </section>
+      <section id="month-view" class="contact-page" hidden>
+        <aside class="album-info">
+          <h1 id="month-name" lang="en"></h1>
+          <a
+            class="album-year"
+            id="month-year-link"
+            href="#year"
+            aria-label="К альбомам года"
+            title="К альбомам года"
+            ><span id="month-year"></span
+          ></a>
+          <div class="album-turn">
+            <button
+              class="icon round"
+              id="month-prev"
+              aria-label="Предыдущий месяц"
+            >
+              <svg><use href="#left" /></svg></button
+            ><i></i
+            ><button
+              class="icon round"
+              id="month-next"
+              aria-label="Следующий месяц"
+            >
+              <svg><use href="#right" /></svg>
+            </button>
+          </div>
+          <p id="month-desc" class="month-description"></p>
+          <button type="button" id="director-report" class="text-link">
+            Отчёт месяца
+          </button>
+          <p id="month-count" class="sr"></p>
+        </aside>
+        <div class="contact-mat">
+          <svg class="doodle contact-star" aria-hidden="true">
+            <use href="#star" />
+          </svg>
+          <div id="contact-sheet" aria-label="Снимки и даты месяца"></div>
+          <nav id="spread-nav" aria-label="Даты на развороте"></nav>
+          <svg class="doodle contact-heart" aria-hidden="true">
+            <use href="#heart" />
+          </svg>
+        </div>
+      </section>
+      <section id="reader" hidden>
+        <div class="reader-heading">
+          <a id="back-month" class="quiet-pill"
+            ><svg><use href="#left" /></svg>К снимкам месяца</a
+          ><button id="read-start" class="text-link">С начала месяца ↑</button>
+        </div>
+        <div id="stories"></div>
+        <a id="reader-end" class="quiet-pill end-album"
+          ><svg><use href="#cal" /></svg>К альбому месяца</a
+        >
+      </section>
+      <p id="boot-error" class="msg" role="alert" hidden></p>
+    </main>
+    <audio id="sound" preload="metadata"></audio>
+    <aside id="play-dock" class="play-dock" aria-label="Плеер" hidden>
+      <button
+        type="button"
+        id="dock-play"
+        class="play-key"
+        aria-label="Воспроизвести"
+      >
+        ▶</button
+      ><span id="dock-title"></span
+      ><input
+        type="range"
+        id="seek"
+        min="0"
+        max="1000"
+        value="0"
+        aria-label="Позиция трека"
+      /><time id="play-time">0:00</time
+      ><button
+        id="dock-close"
+        type="button"
+        class="icon"
+        aria-label="Закрыть плеер"
+      >
+        <svg><use href="#close" /></svg>
+      </button>
+    </aside>
+    <div class="toast" role="status" id="toast" hidden></div>
+    <dialog id="director-dialog" aria-labelledby="director-heading">
+      <form method="dialog" class="dialog-head">
+        <h2 id="director-heading"></h2>
+        <button aria-label="Закрыть" class="icon round">
+          <svg><use href="#close" /></svg>
+        </button>
+      </form>
+      <div id="director-body"></div>
+    </dialog>
+    <dialog id="prefs">
+      <form method="dialog" class="dialog-head">
+        <h2 id="dialog-title"></h2>
+        <button class="icon round" aria-label="Закрыть">
+          <svg><use href="#close" /></svg>
+        </button>
+      </form>
+      <form id="profile-form">
+        <label
+          >Имя<input
+            id="profile-name"
+            autocomplete="given-name"
+            maxlength="48"
+            required
+        /></label>
+        <details id="life-options">
+          <summary>Карта жизни</summary>
+          <div class="profile-grid">
+            <label>Дата рождения<input type="date" id="birth" /></label
+            ><label
+              >Пол<select id="sex">
+                <option value="all">Не указывать</option>
+                <option value="female">Женский</option>
+                <option value="male">Мужской</option>
+              </select></label
+            ><label
+              >Страна<select id="country">
+                <option value="">Выбрать страну</option>
+              </select></label
+            ><label>Город<input id="city" maxlength="100" /></label>
+          </div>
+          <p id="life-note" class="form-note"></p>
+        </details>
+        <p role="status" class="msg" id="profile-msg"></p>
+        <button class="ink-button">Сохранить</button>
+      </form>
+      <div id="settings-panel">
+        <label class="setting-line"
+          ><span>Музыка при наведении</span
+          ><input type="checkbox" id="hover-sound" /></label
+        ><label class="setting-line"
+          ><span>Вечерняя бумага</span><input type="checkbox" id="night-paper"
+        /></label>
+      </div>
+    </dialog>
+    <noscript>Для работы дневника включи JavaScript.</noscript>
+  </body>
+</html>
